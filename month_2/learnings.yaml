@@ -1,0 +1,17 @@
+Difference between malloc() and calloc():
+  malloc() and calloc() are both functions in C used for dynamic memory allocation, but they differ in how they allocate memory and initialize the allocated memory.
+
+  Here are the main differences between malloc() and calloc():
+      Parameters:
+
+        malloc(): Takes a single parameter representing the number of bytes to allocate.
+        calloc(): Takes two parameters: the number of elements to allocate and the size (in bytes) of each element.
+      Initialization:
+
+        malloc(): Allocates uninitialized memory. The content of the allocated memory block is indeterminate.
+        calloc(): Allocates initialized memory. It initializes the allocated memory to zero.
+      Return Value:
+        Both malloc() and calloc() return a pointer to the allocated memory block. If the allocation fails, they return NULL.
+      Memory Efficiency:
+        malloc() may be slightly more memory efficient in certain cases because it does not initialize the allocated memory. If you don't need the memory to be initialized to zero, malloc() may be preferable.
+        calloc() initializes the allocated memory to zero, which can be convenient in many situations, especially when dealing with arrays or structures where you want all elements to start with a known value.
