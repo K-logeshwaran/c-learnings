@@ -15,3 +15,13 @@ Difference between malloc() and calloc():
       Memory Efficiency:
         malloc() may be slightly more memory efficient in certain cases because it does not initialize the allocated memory. If you don't need the memory to be initialized to zero, malloc() may be preferable.
         calloc() initializes the allocated memory to zero, which can be convenient in many situations, especially when dealing with arrays or structures where you want all elements to start with a known value.
+
+realloc behaviour:
+
+  Yes, the realloc() function in C may free the old pointer if necessary. When you use realloc() to resize a memory block pointed to by a pointer, the behavior can be summarized as follows->
+
+  If realloc() is able to resize the memory block in place (i.e., if there's enough contiguous memory available), it adjusts the size of the existing memory block without moving it. In this case, the old pointer remains valid, and the function returns the same pointer.
+
+  If realloc() cannot resize the memory block in place (i.e., if there's not enough contiguous memory available), it allocates a new memory block of the requested size, copies the contents of the old block to the new block, and then frees the old block. In this case, the function returns a new pointer to the newly allocated memory block, and the old pointer becomes invalid.
+
+  In either case, whether the old pointer is freed or not depends on the behavior of realloc() in response to the specific circumstances (e.g., available memory, size of the new block, etc.). As a result, you should always assign the result of realloc() to a new pointer variable to avoid losing the reference to the reallocated memory block.

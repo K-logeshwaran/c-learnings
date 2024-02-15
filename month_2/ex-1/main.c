@@ -40,6 +40,7 @@ int main()
     printf("Enter no of contacts.. ");
     scanf("%d", &limit);
     contact contacts[limit];
+    contact *xyz;
 
     while (flag)
     {
@@ -48,7 +49,9 @@ int main()
         switch (option)
         {
         case 1:
-            contacts[added] = *get_contact();
+            xyz = get_contact();
+            contacts[added] = *xyz;
+            free(xyz);
             added += 1;
             break;
         case 2:
