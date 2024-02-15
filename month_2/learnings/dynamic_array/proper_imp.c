@@ -1,102 +1,108 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 
 typedef struct
 {
-    int size;
-    int capacity;
-    int *arr;
-} dynamic_array;
+    int length;
+    size_t capacity;
+    int *array;
+} DynamicArray;
 
-dynamic_array *create_dynamic_array(int initial_value)
+DynamicArray *dyaar_create_array()
 {
-    dynamic_array *self = (dynamic_array *)malloc(sizeof(dynamic_array));
+
+    DynamicArray *self = (DynamicArray *)malloc(sizeof(DynamicArray));
     if (self == NULL)
     {
-        printf("\nCan not allocate memory\n");
         exit(0);
     }
-
-    self->capacity = 5;
-    self->size = 1;
-    self->arr = (int *)malloc(sizeof(int) * 5);
-    if (initial_value == NULL)
-        return self;
-    self->arr[0] = initial_value;
+    self->capacity = sizeof(int) * 5;
+    self->length = 0;
+    self->array = (int *)malloc(sizeof(int) * 5);
     return self;
 }
 
-void print_dynamic_array(dynamic_array *self)
+void dyaar_print(DynamicArray *self)
 {
-    for (int i = 0; i < self->size; i++)
+    for (int i = 0; i < self->length; i++)
     {
-        printf("\nval=%d,index=%d", self->arr[i], i);
+        printf("\nval=%d,index=%d", self->array[i], i);
     }
-    printf("\n length of arr =%d", self->size);
+    printf("\n length of arr =%d", self->length);
 }
 
-void push(dynamic_array *self, int v)
+int check_capacity(int len, size_t current_capacity)
 {
-    int len = self->size;
-    if (self->capacity == self->size)
+    size_t occupied_space = len * sizeof(int);
+    if (occupied_space == current_capacity)
     {
-        int *ap = (int *)realloc(self, sizeof(int) * self->capacity);
-        self->arr = ap;
+        // signal to increase capacity
+        return 1;
     }
-    self->arr[len] = v;
-    self->size = (len + 1);
+    else
+    {
+        // don't increase
+        return 0;
+    }
 }
 
-int *get_element(dynamic_array *self, int index)
+void dyaar_append(DynamicArray *self, int v)
+
 {
-    if (index >= self->size)
+    int len = self->length;
+    if (check_capacity(len, self->capacity))
+    {
+        size_t new_capacity = (self->capacity * 2);
+        self->array = (int *)realloc(self->array, new_capacity);
+        self->capacity = new_capacity;
+    }
+    self->array[self->length] = v;
+    self->length = len + 1;
+};
+
+int *dyaar_get_element(DynamicArray *self, int index)
+{
+    if (index >= self->length)
     {
         return NULL;
     }
-    return &self->arr[index];
+    return &self->array[index];
 }
 
-void remove(dynamic_array *self, int index)
+void dyaar_remove(DynamicArray *self, int index)
 {
-    int *address = get_element(self, index);
-    int len = self->size, i;
-    for (i = 0; i < (self->size - index); i++)
+    int *elm = dyaar_get_element(self, index);
+    if (!elm)
     {
-        *(address + i) = *(address + i + 1);
+        printf("\nArray out of bound\n");
+        return;
     }
-    self->size = (len - 1);
-    // printf("\nbrooooo %p,val=%d\n", (address + i + 1), *(address + i + 1));
-    free((address + i + 1));
+    size_t sz = (self->length - index - 1)*sizeof(int);
+    printf("\nsize=%d\n",sz);
+    memmove(elm, elm + 1, sz);
+    self->length=self->length-1;
 }
-int length(dynamic_array *self)
-{
-    return self->size;
-}
-
-// code given by gpt
-void freeDynamicArray(dynamic_array *da)
-{
-    free(da);
-}
-// code given by gpt completed |^
 
 int main()
-
 {
-    time_t t;
-    srand((unsigned)time(&t));
-    dynamic_array *DA = create_dynamic_array(55);
-    print_dynamic_array(DA);
-    for (int i = 0; i < 15; i++)
+    DynamicArray *da = dyaar_create_array();
+    for (int i = 0; i < 5; i++)
     {
-        push(DA, (rand() % 100) + 1);
+        dyaar_append(da, i * 3);
     }
 
-    print_dynamic_array(DA);
-    // //printf("\n element at 4 is %d", *get_element(DA, 4));
-    // //remove(DA, 7);
-    // //print_dynamic_array(DA);
-    freeDynamicArray(DA);
+    dyaar_print(da);
+    int *pt = da->array;
+    printf("\nelm @4 is %d\n", *dyaar_get_element(da, 4));
+    dyaar_remove(da, 2);
+    dyaar_print(da);
+    puts("now adding val");
+    dyaar_append(da,69);
+    puts("after adding val");
+    dyaar_print(da);
+    free(da->array);
+    free(da);
+
     return 0;
 }
