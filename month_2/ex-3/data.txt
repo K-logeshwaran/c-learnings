@@ -1,0 +1,9 @@
+ID		Name		Grade
+34		loki		a
+22		sv		s
+31		ka		o
+ID		Name		Grade
+1		2ddasdadasd		d
+567		jhgfd		p
+34		gfsdfsdfvxv		9
+ID		Name		GradeID		Name		Grade
