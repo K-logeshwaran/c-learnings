@@ -1,54 +1,136 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 int str_contains(char *src, char *search_term)
 {
-    size_t count = strlen(src) / strlen(search_term);
-    char *current = malloc(sizeof(search_term));
+    size_t len = strlen(search_term);
+    size_t count = strlen(src);
+    char *current = malloc(sizeof(char) * (len + 1));
+    printf("\nlen %d\n", len);
+    current[len] = '\0';
     for (size_t i = 0; i < count; i++)
     {
-        memmove(current, text + (i * cul_len), cul_len);
+        // memmove(current, src + (i * len), len);
+        memmove(current, src + i, len);
+        printf("\n%s", current);
+        if (strcmp(current, search_term) == 0)
+        {
+            free(current);
+            return 1;
+        }
     }
+    free(current);
+    return 0;
+}
+
+char **str_split(char splitter, char *string)
+{
+    char arr[7][7];
+    int row = 0, col = 0, i = 0;
+    while (1)
+    {
+
+        if (string[i] == ';' || string[i] == '\0')
+        {
+            arr[row][col] = '\0';
+            row++;
+            col = 0;
+            i++;
+            if (string[i] == '\0')
+                break;
+
+            continue;
+        }
+        // printf("i%d j%d",row,i);
+        arr[row][col] = string[i];
+        col++;
+        i++;
+    }
+
+    row += 1;
+    printf("row %d ", row);
+    for (int g = 0; g < row - 1; g++)
+    {
+        printf("%s ", arr[g]);
+    }
+
+    return arr;
+}
+
+int str_count(char **string, char elm)
+{
+    int count = 0;
+    for (size_t i = 0; i < strlen(*string); i++)
+    {
+        printf("`%c", *((*string) + i));
+        if (*(*string + i) == elm)
+        {
+            count += 1;
+        }
+        // printf("%c\n",*(string+i));
+    }
+
+    return count;
+}
+
+char *srt_rem_char(char *string, char item)
+{
+    int no_of_spc = str_count(&string, item);
+    size_t sz = sizeof(char) * (strlen(string) - no_of_spc);
+    printf("\nszz->%d\n", sz);
+    char *new_str = malloc(sizeof(char) * sz);
+    new_str[sz] = '\0';
+    if (new_str == NULL)
+    {
+        printf("Mem alloc fail");
+        exit(3);
+    }
+
+    int i = 0;
+    int j = 0;
+
+    while (1)
+    {
+        if (j == sz)
+        {
+            break;
+        }
+        char c = *(string + i);
+        if (c == item)
+
+        {
+            i += 1;
+            continue;
+        }
+        new_str[j] = string[i];
+        j += 1;
+        i += 1;
+    }
+    printf("i=%d  j= %d", i, j);
+    return new_str;
 }
 
 int main()
 {
-    char text[] = "Students are forbiden to write or";
-    char to_find[] = "are";
-    size_t source_len = strlen(text), cul_len = strlen(to_find);
-    ;
-    char *current = malloc(sizeof(to_find));
-    current[sizeof(to_find) - 1] = '\0';
-    printf("Vals\n");
-    int j = 0;
-    for (size_t i = 0; i < source_len / cul_len; i++)
+    char *text = "Students are forbiden to write or Doing similar work twice in the same program might let the compiler optimize between them. Building multiple executables that each microbenchmark a single implementation strategy is safer (but more";
+    char *to_find = "executables";
+    char *refinex_txt = filter_string(text);
+    if (str_contains(text, to_find) == 1)
     {
-        printf("%d  ", i * 5);
-        // memmove(current, text + (i * 5), 5);
-        memmove(current, text + (i * cul_len), cul_len);
-        if (strcmp(current, to_find) == 0)
-        {
-            printf("We founddd......\n starting index %d end index = %d", i * cul_len, (i * cul_len) + cul_len);
-            printf("\n%c  %c", text[i * cul_len], text[(i * cul_len) + cul_len - 1]);
-
-            break;
-        }
-        printf("\n %s \n ", current);
-        free(current);
+        printf("Yesss......");
+    }
+    else
+    {
+        printf("Nooooooooo");
     }
 
-    // for (size_t i = 0; i < cul_len; i++)
-    // {
-    //     current[i]=text[i];
-    //     printf("c=%c,t=%c\n",current[i],text[i]);
-
-    // }
-
-    // printf("\n\nsize %d ", sizeof to_find ) ;
-    // printf("\n\nnew2 %d ", strcmp(current,"Stude"));
-    // printf("\n\nnew3  ,s%d ,c%d " ,source_len,cul_len);
-    // printf("\n\nnew4 %d ", strlen(to_find));
+    // printf("looking ff %d\n", str_space_count(&text));
+    // printf("After filter\n\n");
+    // char *p = filter_string(text);
+    // printf("\n%s", p);
+    free(refinex_txt);
 
     return 0;
 }

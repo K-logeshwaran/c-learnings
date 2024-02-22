@@ -91,3 +91,73 @@ int main()
     freeDynamicArray(DA);
     return 0;
 }
+
+/*
+
+ printf("%c\n%c\n%c\n%c\n%c",
+    arr[x - 1][y],
+    arr[x + 1][y],
+    arr[x][y - 1],
+    arr[x][y + 1],
+    arr[x - 1][y + 1],
+    arr[x - 1][y - 1],
+    arr[x][y + 1],
+    arr[x + 1][y - 1],
+    arr[x + 1][y + 1]
+    );
+
+*/
+
+/*
+
+int search_near(int x, int y, char **arr, int r, int c)
+{
+    int count = 0;
+
+          if (x - 1 > 0 && y - 1 > 0 && x + 1 < r && y + 1 < c)
+    {
+        // up
+        if (arr[x - 1][y] == 'M')
+        {
+            count++;
+        }
+        // down
+        if (arr[x + 1][y] == 'M')
+        {
+            count++;
+        }
+        // right-up-dig
+        if (arr[x - 1][y + 1] == 'M')
+        {
+            count++;
+        }
+        // left-up-dig
+        if (arr[x + 1][y - 1] == 'M')
+        {
+            count++;
+        }
+        // left
+        if (arr[x][y - 1] == 'M')
+        {
+            count++;
+        }
+        // right
+        if (arr[x][y + 1] == 'M')
+        {
+            count++;
+        }
+        // left-dwn-dig
+        if (arr[x + 1][y - 1] == 'M')
+        {
+            count++;
+        }
+        // right-dwn-dig
+        if (arr[x + 1][y + 1] == 'M')
+        {
+            count++;
+        }
+        return count;
+    }
+
+
+*/

@@ -1,15 +1,14 @@
 #include <stdio.h>
-#include <conio.h>
+#include <stdlib.h>
 
 int main()
 
 {
-    
-    while (1){
-    if ( _kbhit() )
-        int key_code = _getch();
-        // do stuff depending on key_code
-    else 
-        continue;
+
+    FILE *fp = fopen("file.txt", "r");
+    fseek(fp, 0, SEEK_END);
+
+    printf(" size of %ld ", ftell(fp));
+    free(fp);
     return 0;
 }
