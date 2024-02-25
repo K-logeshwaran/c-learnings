@@ -3,6 +3,12 @@
 #include <string.h>
 #include <time.h>
 
+typedef struct
+{
+    char **arr;
+    unsigned int row;
+} splitReturn;
+
 int str_contains(char *src, char *search_term)
 {
     size_t len = strlen(search_term);
@@ -25,14 +31,25 @@ int str_contains(char *src, char *search_term)
     return 0;
 }
 
-char **str_split(char splitter, char *string)
+char **create2D_arr(int r, int c)
 {
-    char arr[7][7];
+    char **arr = (char **)malloc(sizeof(char *) * r);
+    for (int i = 0; i < c; i++)
+    {
+        arr[i] = (char *)malloc(sizeof(char *) * c);
+    }
+    return arr;
+}
+
+splitReturn str_split(char splitter, char *string)
+{
+    // char arr[7][7];
+    char **arr = create2D_arr(100, 100);
     int row = 0, col = 0, i = 0;
     while (1)
     {
-
-        if (string[i] == ';' || string[i] == '\0')
+        // printf("\n%c", string[i]);
+        if (string[i] == splitter || string[i] == '\0')
         {
             arr[row][col] = '\0';
             row++;
@@ -50,13 +67,14 @@ char **str_split(char splitter, char *string)
     }
 
     row += 1;
-    printf("row %d ", row);
-    for (int g = 0; g < row - 1; g++)
-    {
-        printf("%s ", arr[g]);
-    }
-
-    return arr;
+    // for (int g = 0; g < row - 1; g++)
+    // {
+    //     printf("%s ", arr[g]);
+    // }
+    splitReturn val;
+    val.arr = arr;
+    val.row = row;
+    return val;
 }
 
 int str_count(char **string, char elm)
@@ -116,7 +134,7 @@ int main()
 {
     char *text = "Students are forbiden to write or Doing similar work twice in the same program might let the compiler optimize between them. Building multiple executables that each microbenchmark a single implementation strategy is safer (but more";
     char *to_find = "executables";
-    char *refinex_txt = filter_string(text);
+    // char *refinex_txt = filter_string(text);
     if (str_contains(text, to_find) == 1)
     {
         printf("Yesss......");
@@ -126,11 +144,17 @@ int main()
         printf("Nooooooooo");
     }
 
+    splitReturn r= str_split(' ', text);
+    for (int i = 0; i < r.row-5; i++)
+    {
+        printf("\n%s", r.arr[i]);
+    }
+
     // printf("looking ff %d\n", str_space_count(&text));
     // printf("After filter\n\n");
     // char *p = filter_string(text);
     // printf("\n%s", p);
-    free(refinex_txt);
+    free(r.arr);
 
     return 0;
 }

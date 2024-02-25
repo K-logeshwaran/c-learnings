@@ -47,15 +47,57 @@ char **create_matrix(int r, int c)
 
 // xy index arr[x][y];
 
-int search_near(int x, int y, char **arr, int r, int c)
+int search_near(int x, int y, char ***A, int r, int c)
 {
     int count = 0;
-
-    if (x == 0 && y != c - 1)
+    char **arr =*A;
+    if (x < r - 1 && y == 0)
     {
-        // printf("eeeeee33");
-        // can go 5
-        //  left,right,lft-dwn,rig-dwn,dwn
+        // can go 3 dir
+        // right down down-right
+
+        // right
+        if (arr[x][y + 1] == 'M')
+        {
+            count++;
+        }
+        // down
+        if (arr[x + 1][y] == 'M')
+        {
+            count++;
+        }
+        // right-dwn-dig
+        if (arr[x + 1][y + 1] == 'M')
+        {
+            count++;
+        }
+        return count;
+    }
+    else if (x < r && y == c - 1)
+    {
+        // can go 3 opposite to y=0
+        // down left down-left
+        // down
+        if (arr[x + 1][y] == 'M')
+        {
+            count++;
+        }
+        // left
+        if (arr[x][y - 1] == 'M')
+        {
+            count++;
+        }
+        // left-down
+        if (arr[x + 1][y - 1] == 'M')
+        {
+            count++;
+        }
+        return count;
+    }
+    else if (x == 0 && y != 0 && y < c - 2)
+    {
+        // can go 5 dir
+        // left right -all down
         // left
         if (arr[x][y - 1] == 'M')
         {
@@ -63,6 +105,11 @@ int search_near(int x, int y, char **arr, int r, int c)
         }
         // right
         if (arr[x][y + 1] == 'M')
+        {
+            count++;
+        }
+        // down
+        if (arr[x + 1][y] == 'M')
         {
             count++;
         }
@@ -76,31 +123,52 @@ int search_near(int x, int y, char **arr, int r, int c)
         {
             count++;
         }
-        // down
-        if (arr[x + 1][y] == 'M')
+        return count;
+    }
+    else if (x == r - 1 && y != 0 && y < c - 2)
+    {
+        // can go 5 dir opposite to x=0
+        // left right -all up
+        // left
+        if (arr[x][y - 1] == 'M')
         {
             count++;
         }
-        return count;
-    }
-
-    if (x == r - 1 && y != c - 1)
-    {
-        // printf("%c ", arr[x][y]);
-
-        // printf("\n up %c ", arr[x - 1][y]);
-        // printf(" \nleft %c ", arr[x][y - 1]);
-        // printf(" \nright %c ", arr[x][y + 1]);
-        // printf(" \nright-up %c ", arr[x - 1][y + 1]);
-        // printf(" \nleft-up %c ", arr[x - 1][y - 1]);
-        // can go 5
-        // up,lft,rht,left-up,rht-up
+        // right
+        if (arr[x][y + 1] == 'M')
+        {
+            count++;
+        }
         // up
         if (arr[x - 1][y] == 'M')
         {
             count++;
         }
-
+        // right-up-dig
+        if (arr[x - 1][y + 1] == 'M')
+        {
+            count++;
+        }
+        // left-up-dig
+        if (arr[x - 1][y - 1] == 'M')
+        {
+            count++;
+        }
+        return count;
+    }
+    else
+    {
+        // up
+        if (arr[x - 1][y] == 'M')
+        {
+            count++;
+        }
+        // down
+        if (arr[x + 1][y] == 'M')
+        {
+            count++;
+        }
+        // left
         if (arr[x][y - 1] == 'M')
         {
             count++;
@@ -120,135 +188,23 @@ int search_near(int x, int y, char **arr, int r, int c)
         {
             count++;
         }
-        return count;
-    }
-    if (x == 0 && y == 0)
-    {
-        // can go
-        // down,right,right-dwn
-        if (arr[x + 1][y] == 'M')
+
+        // left-dwn-dig
+        if (arr[x + 1][y - 1] == 'M')
         {
             count++;
         }
-        if (arr[x][y + 1] == 'M')
-        {
-            count++;
-        }
+        // right-dwn-dig
         if (arr[x + 1][y + 1] == 'M')
         {
             count++;
         }
         return count;
     }
-    if (x == 0 && y == c - 1)
-    {
-        // can go
-        // down,left,left-dwn
-        if (arr[x + 1][y] == 'M')
-        {
-            count++;
-        }
-        if (arr[x][y - 1] == 'M')
-        {
-            count++;
-        }
-        if (arr[x + 1][y - 1] == 'M')
-        {
-            count++;
-        }
-    }
-    if (x == r - 1 && y == 0)
-    {
-        // can go
-        // up,right,right-up
-        if (arr[x - 1][y] == 'M')
-        {
-            count++;
-        }
-        if (arr[x][y + 1] == 'M')
-        {
-            count++;
-        }
-        if (arr[x - 1][y + 1] == 'M')
-        {
-            count++;
-        }
-        return count;
-    }
-    if (x == r - 1 && y == c - 1)
-    {
-        // can go
-        // up,left,left-up
-        if (arr[x - 1][y] == 'M')
-        {
-            count++;
-        }
-        if (arr[x][y - 1] == 'M')
-        {
-            count++;
-        }
-        if (arr[x - 1][y - 1] == 'M')
-        {
-            count++;
-        }
-        return count;
-    }
-
-    // printf("ammmmmmmmmm");
-    // printf("%d",x);
-    if (arr[x - 1][y] == 'M')
-    {
-
-        count++;
-    }
-    // down
-    // printf("ammmmmmmmmm2");
-    if (arr[x + 1][y] == 'M')
-    {
-        count++;
-    }
-    // right-up-dig
-    // printf("ammmmmmmmmm3");
-    if (arr[x - 1][y + 1] == 'M')
-    {
-        count++;
-    }
-    // left-up-dig
-    // printf("ammmmmmmmmm4");
-    if (arr[x - 1][y - 1] == 'M')
-    {
-        count++;
-    }
-    // left
-    // printf("ammmmmmmmmm5");
-    if (arr[x][y - 1] == 'M')
-    {
-        count++;
-    }
-    // right
-    // printf("ammmmmmmmmm6");
-    if (arr[x][y + 1] == 'M')
-    {
-        count++;
-    }
-    // left-dwn-dig
-    // printf("ammmmmmmmmm7");
-    if (arr[x + 1][y - 1] == 'M')
-    {
-        count++;
-    }
-    // right-dwn-dig
-    // printf("ammmmmmmmmm8");
-    if (arr[x + 1][y + 1] == 'M')
-    {
-        count++;
-    }
     return count;
-
-    // return count;
 }
 
-void output_matrix(int r, int c, char **target)
+void output_matrix(int r, int c, char ***target)
 {
     char **result_mat = create_matrix(r, c);
     for (int i = 0; i < r; i++)
@@ -257,10 +213,12 @@ void output_matrix(int r, int c, char **target)
         {
             if (target[i][j] == '0')
             {
-                //`printf("%d,%d\n",i,j);
+                printf("next it \ni=%d j=%d",i,j);
                 int count = search_near(i, j, target, r, c);
+                printf("\ni=%d j=%d count =%d",i,j,count);
                 char count_char = count + '0';
                 result_mat[i][j] = count_char;
+                // result_mat[i][j] = 'U';
             }
             else
             {
@@ -291,7 +249,7 @@ int main()
     printf("\n---Input----\n");
     fill_matrix(r, c, a);
     printf("\n---output----\n");
-    output_matrix(r, c, a);
+    output_matrix(r, c, &a);
     // printf("\n\n");
     // printf("count of choosen is %d", search_near(0, c - 1, a, r, c));
     free(a);
