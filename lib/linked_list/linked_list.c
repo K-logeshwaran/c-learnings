@@ -151,3 +151,30 @@ void linked_list_update_element(LinkedList *ll, int index, generic data)
     Node *np = __get_node_by_index(ll, index);
     np->data = data;
 }
+
+void linked_list_delete_element_index(LinkedList *ll, int index)
+{
+    if (index == 0)
+    {
+        Node *head = ll->Head;
+        Node *head_next = ll->Head->next;
+        ll->Head = head_next;
+        free(head);
+        return;
+    }
+    Node *previous_node = __get_node_by_index(ll, index - 1);
+    Node *delete_node = __get_node_by_index(ll, index);
+    Node *delete_node_next = delete_node->next;
+    previous_node->next = delete_node_next;
+    free(delete_node);
+    ll->length -= 1;
+}
+
+void linked_list_free(LinkedList *ll)
+{
+    for (int i = 0; i < ll->length; i++)
+    {
+        linked_list_delete_element_index(ll,i);
+    }
+    free(ll);
+}

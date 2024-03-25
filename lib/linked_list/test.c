@@ -57,11 +57,14 @@ int main()
     linked_list_print(ll, printInt);
     int pos = linked_list_find_element(ll, &e, compare);
     printf("\nElement found at index %d", pos);
-    linked_list_update_element(ll,pos,&h);
+    linked_list_update_element(ll, pos, &h);
     int *data = linked_list_get_element_index(ll, pos);
     printf("\nval %d", *data);
-    free(ll);
-    free(ll2);
+    printf("\n\nllll");
+    linked_list_delete_element_index(ll, 0);
+    linked_list_print(ll, printInt);
+   
+    linked_list_print(ll, printInt);
 
     return 0;
 }

@@ -32,5 +32,6 @@ Node *__get_node_by_index(LinkedList *ll, int index);
 void linked_list_insert_element_at_index(LinkedList *ll, int index, generic data);
 int linked_list_find_element(LinkedList *ll, generic data, bool (*compare)(void *, void *));
 void linked_list_update_element(LinkedList *ll, int index, generic data);
-
+void linked_list_delete_element_index(LinkedList *ll, int index);
+void linked_list_free(LinkedList *ll);
 #endif
